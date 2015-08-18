@@ -1,4 +1,7 @@
 
+include Hooky::Mysql
+boxfile = converge( BOXFILE_DEFAULTS, payload[:boxfile] ) 
+
 directory '/datas'
 
 # chown datas for gonano
@@ -13,9 +16,15 @@ end
 
 template '/data/etc/my.cnf' do
   mode 0644
+  source 'my-prod.cnf'
   owner 'gonano'
   group 'gonano'
-  variables ({ user: "nanobox" })
+  variables ({ 
+    boxfile: boxfile, 
+    type:    payload[:service][:scaffold_name], 
+    version: payload[:image][:version], 
+    plugins: plugins(boxfile) 
+  })
 end
 
 execute 'mysql_install_db --basedir=/data --ldata=/datas --user=gonano --defaults-file=/data/etc/my.cnf' do
@@ -49,8 +58,13 @@ until File.exists?( "/tmp/mysqld.sock" )
 end
 
 # Create nanobox user and databases
+users = payload[:service][:users]
+
+use_password = can_login?('root', users[:system][:password])
+
 template '/tmp/setup.sql' do
   variables ({ 
+    users:    payload[:service][:users],
     hostname: `hostname`.to_s.strip[-59..-1]
   })
   source 'setup.sql.erb'
@@ -58,11 +72,16 @@ end
 
 execute 'setup user/permissions' do
   command <<-END
-    /data/bin/mysql \
+    /opt/gopagoda/bin/mysql \
     -u root \
+    #{(use_password) ? "--password=#{users[:system][:password]}" : '' } \
     -S /tmp/mysqld.sock \
       < /tmp/setup.sql
   END
+end
+
+file '/tmp/setup.sql' do
+  action :delete
 end
 
 # Configure narc
@@ -80,4 +99,22 @@ export PATH="/opt/local/sbin:/opt/local/bin:/usr/local/sbin:/usr/local/bin:/usr/
 
 exec /opt/gonano/bin/narcd /opt/gonano/etc/narc.conf
   EOF
+end
+
+# Setup root keys for data migrations
+directory "/root/.ssh" do
+  recursive true
+end
+
+file "/root/.ssh/id_rsa" do
+  content payload[:ssh][:admin_key][:private_key]
+  mode 0600
+end
+
+file "/root/.ssh/id_rsa.pub" do
+  content payload[:ssh][:admin_key][:public_key]
+end
+
+file "/root/.ssh/authorized_keys" do
+  content payload[:ssh][:admin_key][:public_key]
 end
