@@ -1,6 +1,6 @@
 <%
 # MySQL my.cnf tuning
-MEMCAP = `kstat -c zone_memory_cap -s physcap -p | cut -f2 | awk '{ printf "%d", $1/1024/1024 }'`.to_i
+MEMCAP = payload[:member][:schema][:meta][:ram].to_i / 1024 / 1024
 
 # innodb_buffer_pool_size
 INNODB_BUFFER_POOL_SIZE = case MEMCAP
@@ -57,10 +57,10 @@ default-character-set = utf8
  
 # The MySQL server
 [mysqld]
-user                    = gopagoda
+user                    = gonano
 port                    = 3306
-basedir                 = /opt/gopagoda
-datadir                 = /data
+basedir                 = /data
+datadir                 = /datas
 socket                  = /tmp/mysqld.sock
 bind-address            = 0.0.0.0
 default-storage-engine  = innodb
@@ -85,8 +85,8 @@ myisam_sort_buffer_size = <%= boxfile[:mysql_myisam_myisam_sort_buffer_size] %>
 myisam-recover-options  = <%= boxfile[:mysql_myisam_recover] %>
 
 # InnoDB settings
-innodb_data_home_dir            = /data
-innodb_log_group_home_dir       = /data
+innodb_data_home_dir            = /datas
+innodb_log_group_home_dir       = /datas
 innodb_data_file_path           = ibdata1:100M:autoextend
 innodb_buffer_pool_size         = <%= boxfile[:mysql_innodb_buffer_pool_size] || INNODB_BUFFER_POOL_SIZE %>
 innodb_log_file_size            = 400M
@@ -152,7 +152,7 @@ ft_stopword_file = <%= boxfile[:mysql_ft_stopword_file] %>
 <% end -%>
 
 # Plugin Configuration
-plugin_dir=/opt/gopagoda/lib/mysql/plugin
+plugin_dir=/data/lib/mysql/plugin
 <% plugins.each do |plugin| -%>
 plugin-load=<%= plugin[:name] %>=<%= plugin[:soname] %>
 <% end -%>
@@ -169,7 +169,7 @@ mysql_audit_log = <%= boxfile[:mysql_audit_log] %>
 #
 <% if boxfile[:mysql_binlog] -%>
 binlog_format     = ROW
-log-bin           = /data/bin.log
+log-bin           = /datas/bin.log
 max_binlog_size   = 100M
 expire_logs_days  = 7
 <% end -%>

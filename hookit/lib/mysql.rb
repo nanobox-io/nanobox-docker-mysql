@@ -69,7 +69,7 @@ module Hooky
     end
 
     def can_login?(user, password)
-      `/opt/gopagoda/bin/mysql \
+      `/data/bin/mysql \
         -u #{user} \
         --password=#{password} \
         -h 127.0.0.1 \

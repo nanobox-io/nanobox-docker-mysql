@@ -2,7 +2,7 @@
 # check for myisam tables
 result = execute "check for MyISAM" do
   command <<-EOF
-    /opt/gopagoda/bin/mysql \
+    /data/bin/mysql \
       -u root \
       --password=#{payload[:service][:users][:system][:password]} \
       -S /tmp/mysqld.sock \
@@ -18,7 +18,7 @@ end
 
 execute "dump and upload to backup container" do
   command <<-EOF
-    bash -c '/opt/gopagoda/bin/mysqldump \
+    bash -c '/data/bin/mysqldump \
       #{(myisam) ? "--lock-all-tables" : "--single-transaction" } \
       --flush-privileges \
       --all-tablespaces \
