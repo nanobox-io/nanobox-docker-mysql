@@ -13,8 +13,8 @@ template '/data/etc/my.cnf' do
     version: payload[:image][:version], 
     plugins: plugins(boxfile) 
   })
-  owner 'gopagoda'
-  group 'gopagoda'
+  owner 'gonano'
+  group 'gonano'
 end
 
 directory '/data/lib/svc/method' do
@@ -23,8 +23,8 @@ end
 
 template '/data/lib/svc/method/mysqld' do
   source 'galera-mysqld.erb'
-  owner 'gopagoda'
-  group 'gopagoda'
+  owner 'gonano'
+  group 'gonano'
   mode 0755
   variables ({
     payload: payload

@@ -6,7 +6,7 @@ result = execute "check for MyISAM" do
       -u root \
       --password=#{payload[:service][:users][:system][:password]} \
       -S /tmp/mysqld.sock \
-      -e "SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'gopagoda' AND ENGINE = 'MyISAM'\\G"
+      -e "SELECT count(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'gonano' AND ENGINE = 'MyISAM'\\G"
     EOF
 end
 
@@ -31,7 +31,7 @@ execute "dump and upload to backup container" do
       -u root \
       --password=#{payload[:service][:users][:system][:password]} \
       -S /tmp/mysqld.sock \
-      --databases gopagoda \
+      --databases gonano \
       | gzip \
         | tee >(md5sum | cut -f1 -d" " > /tmp/md5sum) \
           | ssh #{payload[:backup][:local_ip]} \

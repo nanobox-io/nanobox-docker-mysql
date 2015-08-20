@@ -72,7 +72,7 @@ end
 
 execute 'setup user/permissions' do
   command <<-END
-    /opt/gopagoda/bin/mysql \
+    /opt/gonano/bin/mysql \
     -u root \
     #{(use_password) ? "--password=#{users[:system][:password]}" : '' } \
     -S /tmp/mysqld.sock \

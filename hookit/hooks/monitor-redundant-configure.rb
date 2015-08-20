@@ -4,8 +4,8 @@ directory '/data/lib/svc/method' do
 end
 
 template '/data/lib/svc/method/garbd' do
-  owner 'gopagoda'
-  group 'gopagoda'
+  owner 'gonano'
+  group 'gonano'
   mode 0755
   variables ({
     payload: payload
