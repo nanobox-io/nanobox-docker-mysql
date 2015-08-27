@@ -24,9 +24,17 @@ Vagrant.configure(2) do |config|
 
   # Build image
   config.vm.provision "shell", inline: "docker build -t #{ENV['docker_user']}/mysql /vagrant"
+  # build different versions (when we support them)
+  # config.vm.provision "shell", inline: "docker build -t #{ENV['docker_user']}/mysql:5.4 -f Dockerfile-5_4 /vagrant"
+
+  # Tag built images
+  config.vm.provision "shell", inline: "docker tag #{ENV['docker_user']}/mysql #{ENV['docker_user']}/mysql:5.5"
+  config.vm.provision "shell", inline: "docker tag #{ENV['docker_user']}/mysql #{ENV['docker_user']}/mysql:5.5-stable"
 
   # Publish image to dockerhub
   config.vm.provision "shell", inline: "docker push #{ENV['docker_user']}/mysql"
+  config.vm.provision "shell", inline: "docker push #{ENV['docker_user']}/mysql:5.5"
+  config.vm.provision "shell", inline: "docker push #{ENV['docker_user']}/mysql:5.5-stable"
 
   config.vm.provider "virtualbox" do |v|
     v.customize ["modifyvm", :id, "--memory", "1024"]
