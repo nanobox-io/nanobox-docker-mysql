@@ -12,7 +12,7 @@ ulimit -n 10240
 ping_server() {
   ping -s $1 64 1
 }
- 
+
 test_port() {
   nc $1 $2 < /dev/null
 }
@@ -23,7 +23,7 @@ arbiter = nil
 head_node = nil
 
 payload[:generation][:members].each do |m|
-  
+
   if m[:role] == 'monitor'
     arbiter = m[:local_ip]
 
@@ -45,7 +45,7 @@ end
 NODE=<%= node %>
 ARBITER=<%= arbiter %>
 HEAD_NODE=<%= head_node %>
- 
+
 start(){
   # ping arbiter
   if [[ $(ping_server ${ARBITER}) ]]; then
@@ -54,7 +54,7 @@ start(){
       # Really start
       # echo "found arbiter - starting up"
       /data/sbin/mysqld --defaults-file=/data/etc/my.cnf --pid-file=${PIDFILE}
-      exit $SMF_EXIT_OK  
+      exit $SMF_EXIT_OK
     fi
   fi
   # if that didn't start it check the other member
@@ -63,7 +63,7 @@ start(){
       # start up
       # echo "found other node - starting up"
       /data/sbin/mysqld --defaults-file=/data/etc/my.cnf --pid-file=${PIDFILE}
-      exit $SMF_EXIT_OK  
+      exit $SMF_EXIT_OK
     fi
     # mysql isn't listening. Lets compare seqno
     if [[ -f /datas/grastate.dat ]]; then
@@ -111,18 +111,18 @@ start(){
       if [[ ${MY_SEQNO} -gt ${NODE_SEQNO} ]]; then
         # echo "starting with --wsrep-new-cluster"
         /data/sbin/mysqld --defaults-file=/data/etc/my.cnf --wsrep-new-cluster --pid-file=${PIDFILE}
-        exit $SMF_EXIT_OK  
+        exit $SMF_EXIT_OK
       fi
       if [[ ${MY_SEQNO} -eq ${NODE_SEQNO} && ${HEAD_NODE} = "yes" ]]; then
         # echo "head node, starting with --wsrep-new-cluster"
         /data/sbin/mysqld --defaults-file=/data/etc/my.cnf --wsrep-new-cluster --pid-file=${PIDFILE}
-        exit $SMF_EXIT_OK  
+        exit $SMF_EXIT_OK
       fi
     fi
   fi
   # server isn't up yet, wait until I can ping
 }
- 
+
 start_loop(){
   while [[ 1 ]]
   do
@@ -131,7 +131,7 @@ start_loop(){
     sleep 10
   done
 }
- 
+
 case "$1" in
 start)
   start_loop

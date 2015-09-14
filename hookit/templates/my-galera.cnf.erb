@@ -41,20 +41,20 @@ TABLE_CACHE = case (MEMCAP / 4)
 # thread_cache_size
 THREAD_CACHE_SIZE = case (MAX_CONNECTIONS / 2)
   when 0..1000 then 100
-  else 
+  else
     1000
   end
 -%>
 #
 # nanobox MySQL configuration
 #
- 
+
 # The following options will be passed to all MySQL clients
 [client]
 port                  = 3306
 socket                = /tmp/mysqld.sock
 default-character-set = utf8
- 
+
 # The MySQL server
 [mysqld]
 user                    = gonano
@@ -101,19 +101,13 @@ innodb_write_io_threads         = <%= boxfile[:mysql_innodb_write_io_threads] %>
 innodb_autoinc_lock_mode        = 2
 innodb_file_per_table
 
-<% if type == 'mariadb' -%>
-# Aria 
-aria_pagecache_buffer_size      = 8M
-aria_sort_buffer_size           = 32M
-<% end -%>
-
 <% if boxfile[:mysql_slow_query_log] -%>
 # Slow query log settings
 # The default logs all full table scans,tmp tables,filesorts on disk queries
 slow_query_log_file = /var/log/mysql/slowquery.log
 slow_query_log      = 1
 <% end -%>
- 
+
 # Other general MySQL settings
 performance-schema        = <%= boxfile[:mysql_performance_schema] %>
 table_open_cache          = <%= boxfile[:mysql_table_open_cache] || TABLE_CACHE %>
@@ -121,7 +115,7 @@ thread_cache_size         = <%= boxfile[:mysql_thread_cache_size] || THREAD_CACH
 query_cache_type          = 0
 query_cache_size          = 0
 back_log                  = <%= boxfile[:mysql_back_log] || BACK_LOG %>
-thread_concurrency        = <%= boxfile[:mysql_thread_concurrency] || (`mpstat | tail -n +2 | wc -l`.to_i * 2 + 2) %> 
+thread_concurrency        = <%= boxfile[:mysql_thread_concurrency] || (`mpstat | tail -n +2 | wc -l`.to_i * 2 + 2) %>
 tmpdir                    = /var/tmp
 max_connections           = <%= boxfile[:mysql_max_connections] || MAX_CONNECTIONS %>
 max_allowed_packet        = <%= boxfile[:mysql_max_allowed_packet] %>
@@ -165,7 +159,7 @@ plugin-load=<%= plugin[:name] %>=<%= plugin[:soname] %>
 <% if boxfile[:mysql_audit_log] and boxfile[:mysql_plugins].include? 'audit_log' -%>
 mysql_audit_log = <%= boxfile[:mysql_audit_log] %>
 <% end -%>
- 
+
 # Replication settings (master to slave)
 # This is not enabled by default.  There are more steps
 # to this besides uncommenting the lines below.
@@ -176,7 +170,7 @@ log-bin           = /datas/bin.log
 max_binlog_size   = 100M
 log-error         = /var/log/mysql/error.log
 expire_logs_days  = 7
- 
+
 # Galera wsrep configuration
 wsrep_provider=/data/lib/mysql/plugin/libgalera_smm.so
 wsrep_cluster_name="<%= payload[:service][:id].delete('-') %>"
@@ -189,17 +183,17 @@ wsrep_node_name="<%= `hostname`.to_s.strip[-59..-1] %>"
 [mysqldump]
 quick
 max_allowed_packet = 16M
- 
+
 [mysql]
 no-auto-rehash
 # Remove the next comment character if you are not familiar with SQL
 #safe-updates
- 
+
 [myisamchk]
 key_buffer_size   = 128M
 sort_buffer_size  = 128M
 read_buffer       = 2M
 write_buffer      = 2M
- 
+
 [mysqlhotcopy]
 interactive-timeout

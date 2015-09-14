@@ -12,7 +12,7 @@ ulimit -n 10240
 nodes = []
 
 payload[:generation][:members].each do |m|
-  
+
   if not m[:type] == 'monitor'
     nodes << m[:local_ip]
   end
@@ -22,15 +22,15 @@ end
 %>
 
 NODES=(<%= nodes.join ' ' %>)
- 
+
 ping_server() {
   ping -s $1 64 1
 }
- 
+
 test_port() {
   nc $1 $2 < /dev/null
 }
- 
+
 start(){
   for NODE in ${NODES[@]}; do
     if [[ $(ping_server ${NODE}) ]]; then
@@ -43,7 +43,7 @@ start(){
     fi
   done
 }
- 
+
 start_loop(){
   while [[ 1 ]]
   do
@@ -52,7 +52,7 @@ start_loop(){
     sleep 10
   done
 }
- 
+
 case "$1" in
 start)
   start_loop

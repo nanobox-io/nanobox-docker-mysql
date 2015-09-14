@@ -1,8 +1,14 @@
 
 include Hooky::Mysql
-boxfile = converge( BOXFILE_DEFAULTS, payload[:boxfile] ) 
+boxfile = converge( BOXFILE_DEFAULTS, payload[:boxfile] )
 
 directory '/datas'
+
+if payload[:platform] == 'local'
+  memcap = 128
+else
+  memcap = payload[:member][:schema][:meta][:ram].to_i / 1024 / 1024
+end
 
 # chown datas for gonano
 execute 'chown /datas' do
@@ -19,11 +25,12 @@ template '/data/etc/my.cnf' do
   source 'my-prod.cnf'
   owner 'gonano'
   group 'gonano'
-  variables ({ 
-    boxfile: boxfile, 
-    type:    payload[:service][:scaffold_name], 
-    version: payload[:image][:version], 
-    plugins: plugins(boxfile) 
+  variables ({
+    boxfile: boxfile,
+    type:    'mysql',
+    version: payload[:image][:version],
+    memcap:  memcap,
+    plugins: plugins(boxfile)
   })
 end
 
@@ -57,27 +64,50 @@ until File.exists?( "/tmp/mysqld.sock" )
    sleep( 1 )
 end
 
-# Create nanobox user and databases
-users = payload[:service][:users]
+if payload[:platform] == 'local'
 
-use_password = can_login?('root', users[:system][:password])
+  # Create nanobox user and databases
+  template '/tmp/setup.sql' do
+    variables ({
+      hostname: `hostname`.to_s.strip[-59..-1]
+    })
+    source 'setup.sql.erb'
+  end
 
-template '/tmp/setup.sql' do
-  variables ({ 
-    users:    payload[:service][:users],
-    hostname: `hostname`.to_s.strip[-59..-1]
-  })
-  source 'setup.sql.erb'
-end
+  execute 'setup user/permissions' do
+    command <<-END
+      /data/bin/mysql \
+      -u root \
+      -S /tmp/mysqld.sock \
+        < /tmp/setup.sql
+    END
+  end
 
-execute 'setup user/permissions' do
-  command <<-END
-    /opt/gonano/bin/mysql \
-    -u root \
-    #{(use_password) ? "--password=#{users[:system][:password]}" : '' } \
-    -S /tmp/mysqld.sock \
-      < /tmp/setup.sql
-  END
+else
+
+  # Create nanobox user and databases
+  users = payload[:service][:users]
+
+  use_password = can_login?('root', users[:system][:password])
+
+  template '/tmp/setup.sql' do
+    variables ({
+      users:    payload[:service][:users],
+      hostname: `hostname`.to_s.strip[-59..-1]
+    })
+    source 'setup.sql.erb'
+  end
+
+  execute 'setup user/permissions' do
+    command <<-END
+      /opt/gonano/bin/mysql \
+      -u root \
+      #{(use_password) ? "--password=#{users[:system][:password]}" : '' } \
+      -S /tmp/mysqld.sock \
+        < /tmp/setup.sql
+    END
+  end
+
 end
 
 file '/tmp/setup.sql' do
@@ -101,20 +131,24 @@ exec /opt/gonano/bin/narcd /opt/gonano/etc/narc.conf
   EOF
 end
 
-# Setup root keys for data migrations
-directory "/root/.ssh" do
-  recursive true
-end
+if payload[:platform] != 'local'
 
-file "/root/.ssh/id_rsa" do
-  content payload[:ssh][:admin_key][:private_key]
-  mode 0600
-end
+  # Setup root keys for data migrations
+  directory '/root/.ssh' do
+    recursive true
+  end
 
-file "/root/.ssh/id_rsa.pub" do
-  content payload[:ssh][:admin_key][:public_key]
-end
+  file '/root/.ssh/id_rsa' do
+    content payload[:ssh][:admin_key][:private_key]
+    mode 0600
+  end
 
-file "/root/.ssh/authorized_keys" do
-  content payload[:ssh][:admin_key][:public_key]
+  file '/root/.ssh/id_rsa.pub' do
+    content payload[:ssh][:admin_key][:public_key]
+  end
+
+  file '/root/.ssh/authorized_keys' do
+    content payload[:ssh][:admin_key][:public_key]
+  end
+
 end

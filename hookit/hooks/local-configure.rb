@@ -1,6 +1,6 @@
 
 include Hooky::Mysql
-boxfile = converge( BOXFILE_DEFAULTS, payload[:boxfile] ) 
+boxfile = converge( BOXFILE_DEFAULTS, payload[:boxfile] )
 
 directory '/datas'
 
@@ -53,7 +53,7 @@ end
 
 # Create nanobox user and databases
 template '/tmp/setup.sql' do
-  variables ({ 
+  variables ({
     hostname: `hostname`.to_s.strip[-59..-1]
   })
   source 'setup.sql.erb'

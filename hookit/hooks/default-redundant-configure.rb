@@ -1,17 +1,17 @@
 
 include Hooky::Mysql
-boxfile = converge( BOXFILE_DEFAULTS, payload[:boxfile] ) 
+boxfile = converge( BOXFILE_DEFAULTS, payload[:boxfile] )
 
 # set my.cnf
 template '/data/etc/my.cnf' do
   source 'my-galera.cnf.erb'
   mode 0644
-  variables ({ 
+  variables ({
     payload: payload,
-    boxfile: boxfile, 
-    type:    payload[:service][:scaffold_name], 
-    version: payload[:image][:version], 
-    plugins: plugins(boxfile) 
+    boxfile: boxfile,
+    type:    'mysql',
+    version: payload[:image][:version],
+    plugins: plugins(boxfile)
   })
   owner 'gonano'
   group 'gonano'
