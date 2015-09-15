@@ -2,13 +2,15 @@
 include Hooky::Mysql
 boxfile = converge( BOXFILE_DEFAULTS, payload[:boxfile] )
 
-directory '/datas'
+version = File.read('/var/nano-service-version').to_f
 
 if payload[:platform] == 'local'
   memcap = 128
 else
   memcap = payload[:member][:schema][:meta][:ram].to_i / 1024 / 1024
 end
+
+directory '/datas'
 
 # chown datas for gonano
 execute 'chown /datas' do
@@ -28,7 +30,7 @@ template '/data/etc/my.cnf' do
   variables ({
     boxfile: boxfile,
     type:    'mysql',
-    version: payload[:image][:version],
+    version: version,
     memcap:  memcap,
     plugins: plugins(boxfile)
   })

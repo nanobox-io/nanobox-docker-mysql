@@ -16,5 +16,7 @@ RUN curl -s http://pkgsrc.nanobox.io/nanobox/base/Linux/bootstrap.tar.gz | tar -
     /data/bin/pkgin -y in mysql-server-5.5 mysql-client-5.5 && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /data/var/db/pkgin
 
+RUN echo '5.5' > /var/nano-service-version
+
 # Run runit automatically
 CMD /opt/gonano/bin/nanoinit
