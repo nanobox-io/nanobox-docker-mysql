@@ -1,4 +1,7 @@
 
+include Hooky::Mysql
+boxfile = converge( BOXFILE_DEFAULTS, payload[:boxfile] )
+
 directory '/datas'
 
 # chown datas for gonano
@@ -50,7 +53,7 @@ end
 
 # Create nanobox user and databases
 template '/tmp/setup.sql' do
-  variables ({ 
+  variables ({
     hostname: `hostname`.to_s.strip[-59..-1]
   })
   source 'setup.sql.erb'
@@ -67,7 +70,7 @@ end
 
 # Configure narc
 template '/opt/gonano/etc/narc.conf' do
-  variables ({ uid: payload[:uid], app: "nanobox", logtap: payload[:logtap_uri] })
+  variables ({ uid: payload[:uid], app: "nanobox", logtap: payload[:logtap_host] })
 end
 
 directory '/etc/service/narc'

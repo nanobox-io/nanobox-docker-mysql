@@ -1,13 +1,13 @@
 #
 # NanoBox MySQL configuration
 #
- 
+
 # The following options will be passed to all MySQL clients
 [client]
 port                  = 3306
 socket                = /tmp/mysqld.sock
 default-character-set = utf8
- 
+
 # The MySQL server
 [mysqld]
 user                    = gonano
@@ -51,7 +51,7 @@ innodb_file_per_table
 # The default logs all full table scans,tmp tables,filesorts on disk queries
 slow_query_log_file = /var/log/mysql/slowquery.log
 slow_query_log      = 1
- 
+
 # Other general MySQL settings
 performance-schema        = off
 table_open_cache          = 64
@@ -75,7 +75,7 @@ group_concat_max_len      = 1024
 plugin_dir=/data/lib/mysql/plugin
 
 # Plugin-Specific Configuration
- 
+
 # Replication settings (master to slave)
 # This is not enabled by default.  There are more steps
 # to this besides uncommenting the lines below.
@@ -83,21 +83,21 @@ plugin_dir=/data/lib/mysql/plugin
 #
 wsrep_provider=none
 log-error         = /var/log/mysql/error.log
- 
+
 [mysqldump]
 quick
 max_allowed_packet = 16M
- 
+
 [mysql]
 no-auto-rehash
 # Remove the next comment character if you are not familiar with SQL
 #safe-updates
- 
+
 [myisamchk]
 key_buffer_size   = 128M
 sort_buffer_size  = 128M
 read_buffer       = 2M
 write_buffer      = 2M
- 
+
 [mysqlhotcopy]
 interactive-timeout
