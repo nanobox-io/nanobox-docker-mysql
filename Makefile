@@ -1,33 +1,30 @@
-all: image tag
+# -*- mode: make; tab-width: 4; -*-
+# vim: ts=4 sw=4 ft=make noet
+all: build publish
 
-image:
-	@vagrant up
-	@vagrant ssh -c "sudo docker build -t nanobox/mysql /vagrant"
+LATEST:=5.6
+stability?=latest
+version?=$(LATEST)
+dockerfile?=Dockerfile-$(version)
 
-tag:
-	@vagrant ssh -c "sudo docker tag -f nanobox/mysql nanobox/mysql:5.5"
-	@vagrant ssh -c "sudo docker tag -f nanobox/mysql nanobox/mysql:5.5-stable"
-	@vagrant ssh -c "sudo docker tag -f nanobox/mysql nanobox/mysql:5.5-beta"
-	@vagrant ssh -c "sudo docker tag -f nanobox/mysql nanobox/mysql:5.5-alpha"
-	@vagrant ssh -c "sudo docker tag -f nanobox/mysql nanobox/mysql:stable"
-	@vagrant ssh -c "sudo docker tag -f nanobox/mysql nanobox/mysql:beta"
-	@vagrant ssh -c "sudo docker tag -f nanobox/mysql nanobox/mysql:alpha"
+login:
+	@vagrant ssh -c "docker login"
 
-publish: push_55_stable
+build:
+	@echo "Building 'mysql' image..."
+	@vagrant ssh -c "docker build -f /vagrant/Dockerfile-${version} -t nanobox/mysql /vagrant"
 
-push_55_stable: push_55_beta
-	@vagrant ssh -c "sudo docker push nanobox/mysql"
-	@vagrant ssh -c "sudo docker push nanobox/mysql:5.5"
-	@vagrant ssh -c "sudo docker push nanobox/mysql:5.5-stable"
-	@vagrant ssh -c "sudo docker push nanobox/mysql:stable"
-
-push_55_beta: push_55_alpha
-	@vagrant ssh -c "sudo docker push nanobox/mysql:5.5-beta"
-	@vagrant ssh -c "sudo docker push nanobox/mysql:beta"
-
-push_55_alpha:
-	@vagrant ssh -c "sudo docker push nanobox/mysql:5.5-alpha"
-	@vagrant ssh -c "sudo docker push nanobox/mysql:alpha"
+publish:
+	@echo "Tagging 'mysql:${version}-${stability}' image..."
+	@vagrant ssh -c "docker tag -f nanobox/mysql nanobox/mysql:${version}-${stability}"
+	@echo "Publishing 'mysql:${version}-${stability}'..."
+	@vagrant ssh -c "docker push nanobox/mysql:${version}-${stability}"
+ifeq ($(version),$(LATEST))
+	@echo "Publishing 'mysql:${stability}'..."
+	@vagrant ssh -c "docker tag -f nanobox/mysql nanobox/mysql:${stability}"
+	@vagrant ssh -c "docker push nanobox/mysql:${stability}"
+endif
 
 clean:
-	@vagrant destroy -f
+	@echo "Removing all images..."
+	@vagrant ssh -c "for image in \$$(docker images -q); do docker rmi -f \$$image; done"
