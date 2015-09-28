@@ -13,8 +13,7 @@ ADD files/. /
 RUN rm -rf /data/var/db/pkgin && \
     /data/bin/pkgin -y up && \
     /data/bin/pkgin -y in \
-        mysql-server-5.6 \
-        mysql-client-5.6 && \
+        mysql-server-5.6 && \
     rm -rf /data/var/db/pkgin/cache
 
 # Cleanup disk
