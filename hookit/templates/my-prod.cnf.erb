@@ -1,6 +1,6 @@
 <%
 # MySQL my.cnf tuning
-MEMCAP = payload[:member][:schema][:meta][:ram].to_i / 1024 / 1024
+MEMCAP = memcap
 
 # innodb_buffer_pool_size
 INNODB_BUFFER_POOL_SIZE = case MEMCAP

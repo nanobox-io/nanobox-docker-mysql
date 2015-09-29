@@ -2,7 +2,9 @@
 include Hooky::Mysql
 boxfile = converge( BOXFILE_DEFAULTS, payload[:boxfile] )
 
-version = File.read('/var/nano-service-version').to_f
+version = 5.6
+
+memcap = payload[:member][:schema][:meta][:ram].to_i / 1024 / 1024
 
 # set my.cnf
 template '/data/etc/my.cnf' do
@@ -12,6 +14,7 @@ template '/data/etc/my.cnf' do
     payload: payload,
     boxfile: boxfile,
     type:    'mysql',
+    memcap:  memcap,
     version: version,
     plugins: plugins(boxfile)
   })

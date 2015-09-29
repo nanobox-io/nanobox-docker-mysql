@@ -2,7 +2,7 @@
 include Hooky::Mysql
 boxfile = converge( BOXFILE_DEFAULTS, payload[:boxfile] )
 
-version = File.read('/var/nano-service-version').to_f
+version = 5.5
 
 if payload[:platform] == 'local'
   memcap = 128
@@ -24,7 +24,7 @@ end
 
 template '/data/etc/my.cnf' do
   mode 0644
-  source 'my-prod.cnf'
+  source 'my-prod.cnf.erb'
   owner 'gonano'
   group 'gonano'
   variables ({
