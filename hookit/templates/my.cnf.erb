@@ -13,7 +13,7 @@ default-character-set = utf8
 user                    = gonano
 port                    = 3306
 basedir                 = /data
-datadir                 = /datas
+datadir                 = /data/var/db/mysql
 socket                  = /tmp/mysqld.sock
 bind-address            = 0.0.0.0
 default-storage-engine  = innodb
@@ -31,8 +31,8 @@ myisam_sort_buffer_size = 64M
 myisam-recover-options  = DEFAULT
 
 # InnoDB settings
-innodb_data_home_dir            = /datas
-innodb_log_group_home_dir       = /datas
+innodb_data_home_dir            = /data/var/db/mysql
+innodb_log_group_home_dir       = /data/var/db/mysql
 innodb_data_file_path           = ibdata1:100M:autoextend
 innodb_buffer_pool_size         = 32M
 innodb_log_file_size            = 400M

@@ -66,9 +66,9 @@ start(){
       exit $SMF_EXIT_OK
     fi
     # mysql isn't listening. Lets compare seqno
-    if [[ -f /datas/grastate.dat ]]; then
+    if [[ -f /data/var/db/mysql/grastate.dat ]]; then
       # echo "found state file locally"
-      MY_SEQNO=$(awk '/seqno:/ {print $2;}' /datas/grastate.dat)
+      MY_SEQNO=$(awk '/seqno:/ {print $2;}' /data/var/db/mysql/grastate.dat)
       if [[ ${MY_SEQNO} = "-1" ]]; then
         # crashed or invalid, try something else
         # echo "local seqno is -1, trying alternative"
@@ -86,9 +86,9 @@ start(){
     else
       MY_SEQNO="-1"
     fi
-    if [[ $(ssh -o StrictHostKeyChecking=no   $NODE stat /datas/grastate.dat) ]]; then
+    if [[ $(ssh -o StrictHostKeyChecking=no   $NODE stat /data/var/db/mysql/grastate.dat) ]]; then
       # echo "found state file remotely"
-      NODE_SEQNO=$(ssh -o StrictHostKeyChecking=no   $NODE "awk '/seqno:/ {print \$2;}' /datas/grastate.dat")
+      NODE_SEQNO=$(ssh -o StrictHostKeyChecking=no   $NODE "awk '/seqno:/ {print \$2;}' /data/var/db/mysql/grastate.dat")
       if [[ ${NODE_SEQNO} = "-1" ]]; then
         # crashed or invalid, try something else
         # echo "remote seqno is -1, trying alternative"

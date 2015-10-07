@@ -10,11 +10,13 @@ else
   memcap = payload[:member][:schema][:meta][:ram].to_i / 1024 / 1024
 end
 
-directory '/datas'
+directory '/data/var/db/mysql' do
+  recursive true
+end
 
-# chown datas for gonano
-execute 'chown /datas' do
-  command 'chown -R gonano:gonano /datas'
+# chown data/var/db/mysql for gonano
+execute 'chown /data/var/db/mysql' do
+  command 'chown -R gonano:gonano /data/var/db/mysql'
 end
 
 directory '/var/log/mysql' do
@@ -36,9 +38,9 @@ template '/data/etc/my.cnf' do
   })
 end
 
-execute 'mysql_install_db --basedir=/data --ldata=/datas --user=gonano --defaults-file=/data/etc/my.cnf' do
+execute 'mysql_install_db --basedir=/data --ldata=/data/var/db/mysql --user=gonano --defaults-file=/data/etc/my.cnf' do
   user 'gonano'
-  not_if { ::Dir.exists? '/datas/mysql' }
+  not_if { ::Dir.exists? '/data/var/db/mysql/mysql' }
 end
 
 # Import service (and start)

@@ -3,7 +3,7 @@
 execute "restore from backup" do
   command <<-EOF
     bash -c 'ssh #{payload[:backup][:local_ip]} \
-    'cat /datas/#{payload[:backup][:backup_id]}.gz' \
+    'cat /data/var/db/mysql/#{payload[:backup][:backup_id]}.gz' \
       | gunzip \
         | /data/bin/mysql \
           -u root \

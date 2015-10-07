@@ -35,7 +35,7 @@ execute "dump and upload to backup container" do
       | gzip \
         | tee >(md5sum | cut -f1 -d" " > /tmp/md5sum) \
           | ssh #{payload[:backup][:local_ip]} \
-            > /datas/#{payload[:backup][:backup_id]}.gz
+            > /data/var/db/mysql/#{payload[:backup][:backup_id]}.gz
     for i in ${PIPESTATUS[@]}; do
       if [[ $i -ne 0 ]]; then
         exit $i
@@ -45,7 +45,7 @@ execute "dump and upload to backup container" do
   EOF
 end
 
-remote_sum = `ssh #{payload[:backup][:local_ip]} "md5sum /datas/#{payload[:backup][:backup_id]}.gz | awk \'{print $1}\'"`.to_s.strip
+remote_sum = `ssh #{payload[:backup][:local_ip]} "md5sum /data/var/db/mysql/#{payload[:backup][:backup_id]}.gz | awk \'{print $1}\'"`.to_s.strip
 
 # Read POST results
 local_sum = File.open('/tmp/md5sum') {|f| f.readline}.strip
