@@ -1,4 +1,4 @@
-## nanobox-docker-mysql
+## nanobox-docker-mysql ![Build Status Image](https://travis-ci.org/nanobox-io/nanobox-docker-mysql.svg)
 
 This repo contains the files necessary to create the mysql docker image for [Nanobox](http://nanobox.io) consumption.
 
@@ -8,6 +8,10 @@ This repo contains the files necessary to create the mysql docker image for [Nan
 * [dockerhub](hub.docker.com) account
 
 ## Usage
+
+#### Pre-commit hook
+
+To install the pre-commit hook, run `ln -s ../../pre-commit.sh .git/hooks/pre-commit`
 
 #### Vagrant
 

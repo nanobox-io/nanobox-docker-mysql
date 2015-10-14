@@ -1,0 +1,15 @@
+sudo: required
+
+env:
+  - VERSION=5.5
+  - VERSION=5.6
+
+services:
+  - docker
+
+before_install:
+  - echo building $VERSION
+  - docker build -t nanobox/mongodb:$VERSION $VERSION
+  - docker tag -f nanobox/mongodb:$VERSION nanobox/mongodb:$VERSION-beta
+
+script: sudo tests/run.sh $VERSION
