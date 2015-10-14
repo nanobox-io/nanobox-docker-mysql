@@ -9,7 +9,7 @@ services:
 
 before_install:
   - echo building $VERSION
-  - docker build -t nanobox/mongodb:$VERSION $VERSION
-  - docker tag -f nanobox/mongodb:$VERSION nanobox/mongodb:$VERSION-beta
+  - docker build -t nanobox/mysql:$VERSION $VERSION
+  - docker tag -f nanobox/mysql:$VERSION nanobox/mysql:$VERSION-beta
 
 script: sudo tests/run.sh $VERSION
