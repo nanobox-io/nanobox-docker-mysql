@@ -13,58 +13,6 @@ This repo contains the files necessary to create the mysql docker image for [Nan
 
 To install the pre-commit hook, run `ln -s ../../pre-commit.sh .git/hooks/pre-commit`
 
-#### Vagrant
-
-Before building docker containers, we must initialize the virtual machine with vagrant:
-
-```bash
-vagrant up
-```
-
-#### Build
-
-To build the image:
-
-```bash
-make build
-```
-
-#### Publish
-
-To publish the image:
-
-```bash
-make publish
-```
-
-To publish the image tagged as alpha:
-
-```bash
-make publish stability=alpha
-```
-
-#### Combo
-
-To build and publish the image:
-
-```bash
-make
-```
-
-To build and publish the image tagged as alpha:
-
-```bash
-make stability=alpha
-```
-
-#### Cleaning
-
-To remove all images from the Vagrant machine:
-
-```bash
-make clean
-```
-
 ## Testing
 
 All changes, experimental or not, should be published using the alpha tag. The alpha image can be tested by using [Nanobox](http://nanobox.io), and adding the following to an application's Boxfile:
