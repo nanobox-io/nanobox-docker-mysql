@@ -1,4 +1,4 @@
-## nanobox-docker-mysql
+## nanobox-docker-mysql ![Build Status Image](https://travis-ci.org/nanobox-io/nanobox-docker-mysql.svg)
 
 This repo contains the files necessary to create the mysql docker image for [Nanobox](http://nanobox.io) consumption.
 
@@ -9,57 +9,9 @@ This repo contains the files necessary to create the mysql docker image for [Nan
 
 ## Usage
 
-#### Vagrant
+#### Pre-commit hook
 
-Before building docker containers, we must initialize the virtual machine with vagrant:
-
-```bash
-vagrant up
-```
-
-#### Build
-
-To build the image:
-
-```bash
-make build
-```
-
-#### Publish
-
-To publish the image:
-
-```bash
-make publish
-```
-
-To publish the image tagged as alpha:
-
-```bash
-make publish stability=alpha
-```
-
-#### Combo
-
-To build and publish the image:
-
-```bash
-make
-```
-
-To build and publish the image tagged as alpha:
-
-```bash
-make stability=alpha
-```
-
-#### Cleaning
-
-To remove all images from the Vagrant machine:
-
-```bash
-make clean
-```
+To install the pre-commit hook, run `ln -s ../../pre-commit.sh .git/hooks/pre-commit`
 
 ## Testing
 
