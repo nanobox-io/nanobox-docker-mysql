@@ -5,8 +5,8 @@ web1:
 mysql1:
   name: database1
   version: 5.5
-  stability: latest
+  stability: stable
 mysql2:
   name: database2
   version: 5.6
-  stability: latest
+  stability: stable
