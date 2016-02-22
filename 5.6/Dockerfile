@@ -9,6 +9,7 @@ RUN mkdir -p /var/log/gonano
 RUN rm -rf /data/var/db/pkgin && \
     /data/bin/pkgin -y up && \
     /data/bin/pkgin -y in \
+        galera \
         mysql-server-5.6 && \
     rm -rf /data/var/db/pkgin/cache
 
@@ -16,6 +17,7 @@ RUN rm -rf /data/var/db/pkgin && \
 RUN rm -rf /var/gonano/db/pkgin && \
     /opt/gonano/bin/pkgin -y up && \
     /opt/gonano/bin/pkgin -y in \
+        rsync \
         jq \
         hooks-update && \
     rm -rf /var/gonano/db/pkgin/cache
@@ -27,4 +29,4 @@ RUN rm -rf \
         /var/tmp/*
 
 # Run runit automatically
-CMD /opt/gonano/bin/nanoinit
+CMD [ "/opt/gonano/bin/nanoinit" ]
