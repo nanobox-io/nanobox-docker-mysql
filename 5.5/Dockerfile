@@ -14,9 +14,18 @@ ADD files/. /
 RUN rm -rf /data/var/db/pkgin && \
     /data/bin/pkgin -y up && \
     /data/bin/pkgin -y in \
+        galera \
         mysql-server-5.5 \
         mysql-client-5.5 && \
     rm -rf /data/var/db/pkgin/cache
+
+# Install binaries
+RUN rm -rf /opt/gonano/var/db/pkgin && \
+    /opt/gonano/bin/pkgin -y up && \
+    /opt/gonano/bin/pkgin -y in \
+      rsync && \
+    rm -rf /var/gonano/db/pkgin/cache
+
 
 # Cleanup disk
 RUN rm -rf \
@@ -25,4 +34,4 @@ RUN rm -rf \
         /var/tmp/*
 
 # Run runit automatically
-CMD /opt/gonano/bin/nanoinit
+CMD [ "/opt/gonano/bin/nanoinit" ]
