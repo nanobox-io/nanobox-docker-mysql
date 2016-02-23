@@ -26,10 +26,19 @@ RUN rm -rf /opt/gonano/var/db/pkgin && \
       rsync && \
     rm -rf /var/gonano/db/pkgin/cache
 
+# Install binaries
+RUN apt-get update && \
+    apt-get install lsof && \
+    rm -rf \
+        /var/lib/apt/lists/* \
+        /var/cache/apt/* \
+        /tmp/* \
+        /var/tmp/*
 
 # Cleanup disk
 RUN rm -rf \
         /var/lib/apt/lists/* \
+        /var/cache/apt/* \
         /tmp/* \
         /var/tmp/*
 
