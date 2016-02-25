@@ -14,6 +14,9 @@ ADD files/. /
 RUN rm -rf /data/var/db/pkgin && \
     /data/bin/pkgin -y up && \
     /data/bin/pkgin -y in \
+        luvit-0.10.0 \
+        flip \
+        flip-scripts \
         galera \
         mysql-server-5.5 \
         mysql-client-5.5 && \
