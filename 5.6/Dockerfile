@@ -30,7 +30,7 @@ RUN rm -rf /opt/gonano/var/db/pkgin && \
 
 # Install binaries
 RUN apt-get update && \
-    apt-get install lsof && \
+    apt-get install lsof sysstat && \
     rm -rf \
         /var/lib/apt/lists/* \
         /var/cache/apt/* \
