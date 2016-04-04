@@ -5,11 +5,6 @@ FROM nanobox/runit
 # Create directories
 RUN mkdir -p /var/log/gonano
 
-# Copy files
-ADD hookit/. /opt/gonano/hookit/mod/
-ADD hookit-5.5/. /opt/gonano/hookit/mod/
-ADD files/. /
-
 # Install binaries
 RUN rm -rf /data/var/db/pkgin && \
     /data/bin/pkgin -y up && \
@@ -37,6 +32,20 @@ RUN apt-get update && \
         /var/cache/apt/* \
         /tmp/* \
         /var/tmp/*
+
+# Install hooks
+RUN mkdir -p /opt/nanobox/hooks && \
+    mkdir -p /var/nanobox && \
+    curl \
+      -f \
+      -k \
+      https://s3.amazonaws.com/tools.nanobox.io/hooks/mysql-stable.tgz \
+        | tar -xz -C /opt/nanobox/hooks && \
+    curl \
+      -f \
+      -k \
+      -o /var/nanobox/hooks.md5 \
+      https://s3.amazonaws.com/tools.nanobox.io/hooks/mysql-stable.md5
 
 # Cleanup disk
 RUN rm -rf \
