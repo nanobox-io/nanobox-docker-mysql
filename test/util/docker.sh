@@ -25,7 +25,7 @@ start_container() {
     -d \
     -e "PATH=$(path)" \
     --privileged \
-    nanobox/memcached:$VERSION
+    nanobox/mysql:$VERSION
 }
 
 stop_container() {
