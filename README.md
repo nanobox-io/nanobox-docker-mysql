@@ -3,7 +3,7 @@
 This is an MySQL Docker image used to launch a MySQL service on Nanobox. To use this image, add a data component to your `boxfile.yml` with the `nanobox/mysql` image specified:
 
 ```yaml
-data:
+data.db:
   image: nanobox/mysql
 ```
 
@@ -30,7 +30,7 @@ MySQL components are configured in your `boxfile.yml`. All available configurati
 
 #### Overview of MySQL Boxfile Settings
 ```yaml
-data:
+data.db:
   image: nanobox/mysql
   config:
     version: 5.5
@@ -65,7 +65,7 @@ When configuring MySQL in your Boxfile, you can define which of the following ve
 #### version
 ```yaml
 # default setting
-data:
+data.db:
   image: nanobox/mysql
   config:
     version: 5.6
@@ -81,7 +81,7 @@ This allows you to specify what MySQL plugins to load into your database service
 
 #### plugins
 ```yaml
-data:
+data.db:
   image: nanobox/mysql
   config:
     plugins:
@@ -98,7 +98,7 @@ This enables or disables [MySQL's event scheduler](http://dev.mysql.com/doc/refm
 #### event\_scheduler
 ```yaml
 # default setting
-data:
+data.db:
   image: nanobox/mysql
   config:
     event_scheduler: 'Off'
@@ -110,7 +110,7 @@ View [dev.mysql.com documentation](http://dev.mysql.com/doc/refman/5.5/en/server
 #### max\_connections
 ```yaml
 # default setting
-data:
+data.db:
   image: nanobox/mysql
   config:
     max_connections: 1024
@@ -122,7 +122,7 @@ View [dev.mysql.com documentation](http://dev.mysql.com/doc/refman/5.5/en/server
 #### thread\_stack
 ```yaml
 # default setting
-data:
+data.db:
   image: nanobox/mysql
   config:
     thread_stack: '256K'
@@ -134,7 +134,7 @@ View [dev.mysql.com documentation](http://dev.mysql.com/doc/refman/5.5/en/server
 #### myisam\_recover
 ```yaml
 # default setting
-data:
+data.db:
   image: nanobox/mysql
   config:
     myisam_recover: 'DEFAULT'
@@ -146,7 +146,7 @@ View [dev.mysql.com documentation](http://dev.mysql.com/doc/refman/5.5/en/server
 #### myisam\_recover
 ```yaml
 # default setting
-data:
+data.db:
   image: nanobox/mysql
   config:
     max_allowed_packet:  '16M'
@@ -158,7 +158,7 @@ View [dev.mysql.com documentation](http://dev.mysql.com/doc/refman/5.5/en/server
 #### max\_join\_size
 ```yaml
 # default setting
-data:
+data.db:
   image: nanobox/mysql
   config:
     max_join_size: 9223372036854775807
@@ -170,7 +170,7 @@ View [dev.mysql.com documentation](http://dev.mysql.com/doc/refman/5.1/en/server
 #### table\_open\_cache
 ```yaml
 # default setting
-data:
+data.db:
   image: nanobox/mysql
   config:
     table_open_cache: 64
@@ -182,7 +182,7 @@ View [dev.mysql.com documentation](http://dev.mysql.com/doc/refman/5.5/en/server
 #### query\_cache\_limit
 ```yaml
 # default setting
-data:
+data.db:
   image: nanobox/mysql
   config:
     query_cache_limit: '1M'
@@ -194,7 +194,7 @@ View the [dev.mysql.com documentation](http://dev.mysql.com/doc/refman/5.6/en/se
 #### allow\_suspicious\_udfs
 ```yaml
 # default setting
-data:
+data.db:
   image: nanobox/mysql
   config:
     allow_suspicious_udfs: 'Off'
@@ -206,7 +206,7 @@ View the [dev.mysql.com documentation](http://dev.mysql.com/doc/refman/5.6/en/se
 #### ansi
 ```yaml
 # default setting
-data:
+data.db:
   image: nanobox/mysql
   config:
     ansi: 'Off'
@@ -224,7 +224,7 @@ View the [dev.mysql.com documentation](http://dev.mysql.com/doc/refman/5.5/en/au
 
 #### audit\_log
 ```yaml
-data:
+data.db:
   image: nanobox/mysql
   config:
     audit_log: 'On'
@@ -237,7 +237,7 @@ View the [dev.mysql.com documentation](http://dev.mysql.com/doc/refman/5.5/en/se
 
 ### ft\_max\_word\_len
 ```yaml
-data:
+data.db:
   image: nanobox/mysql
   config:
     ft_max_word_len: 84
@@ -248,7 +248,7 @@ View the [dev.mysql.com documentation](http://dev.mysql.com/doc/refman/5.5/en/se
 
 #### ft\_min\_word\_len
 ```yaml
-data:
+data.db:
   image: nanobox/mysql
   config:
     ft_min_word_len: 4
@@ -259,7 +259,7 @@ View the [dev.mysql.com documentation](http://dev.mysql.com/doc/refman/5.5/en/se
 
 #### ft\_query\_expansion\_limit
 ```yaml
-data:
+data.db:
   image: nanobox/mysql
   config:
     ft_query_expansion_limit: 20
@@ -270,7 +270,7 @@ View the [dev.mysql.com documentation](http://dev.mysql.com/doc/refman/5.5/en/se
 
 #### ft\_stopword\_file
 ```yaml
-data:
+data.db:
   image: nanobox/mysql
   config:
     ft_stopword_file: ' '
