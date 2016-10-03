@@ -1,4 +1,4 @@
-# MySQL ![Build Status Image](https://travis-ci.org/nanobox-io/nanobox-docker-mysql.svg)
+# MySQL [![Build Status Image](https://travis-ci.org/nanobox-io/nanobox-docker-mysql.svg)](https://travis-ci.org/nanobox-io/nanobox-docker-mysql)
 
 This is an MySQL Docker image used to launch a MySQL service on Nanobox. To use this image, add a data component to your `boxfile.yml` with the `nanobox/mysql` image specified:
 
