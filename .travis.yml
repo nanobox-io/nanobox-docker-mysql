@@ -30,6 +30,7 @@ after_success:
     fi
   # `latest` tag is only pushed on master && most recent version
   - if [ "$BRANCH" == "master" ] && [ "$VERSION" == "5.6" ]; then
+    docker tag ${NAMESPACE}/mysql:squashed ${NAMESPACE}/mysql;
     docker push ${REMOTE}${NAMESPACE}/mysql;
     fi
   # `$VERSION` (latest/stable implied) tag is only pushed on master. tag branch for clarity otherwise (`$VERSION-$BRANCH`)
