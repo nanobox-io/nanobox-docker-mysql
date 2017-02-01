@@ -33,6 +33,8 @@ RUN apt-get update && \
         /tmp/* \
         /var/tmp/*
 
+RUN /opt/gonano/bin/gem install remote_syslog_logger
+
 # Install hooks
 RUN mkdir -p /opt/nanobox/hooks && \
     mkdir -p /var/nanobox && \
