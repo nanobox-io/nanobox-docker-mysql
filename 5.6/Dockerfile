@@ -5,6 +5,8 @@ FROM nanobox/runit
 # Create directories
 RUN mkdir -p /var/log/gonano
 
+USER gonano
+
 # Install binaries
 RUN rm -rf /data/var/db/pkgin && \
     /data/bin/pkgin -y up && \
@@ -15,6 +17,8 @@ RUN rm -rf /data/var/db/pkgin && \
         galera \
         mysql-server-5.6 && \
     rm -rf /data/var/db/pkgin/cache
+
+USER root
 
 # Install binaries
 RUN rm -rf /opt/gonano/var/db/pkgin && \
@@ -54,9 +58,6 @@ RUN rm -rf \
         /var/cache/apt/* \
         /tmp/* \
         /var/tmp/*
-
-# Set permissions on /data
-RUN chown -R gonano:gonano /data
 
 # Run runit automatically
 CMD [ "/opt/gonano/bin/nanoinit" ]
