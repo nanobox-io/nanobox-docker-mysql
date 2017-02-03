@@ -30,7 +30,7 @@ RUN rm -rf /opt/gonano/var/db/pkgin && \
 
 # Install binaries
 RUN apt-get update && \
-    apt-get install -y lsof sysstat iputils-arping && \
+    apt-get install -y lsof sysstat iputils-arping cron && \
     rm -rf \
         /var/lib/apt/lists/* \
         /var/cache/apt/* \
