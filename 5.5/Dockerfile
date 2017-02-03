@@ -5,6 +5,8 @@ FROM nanobox/runit
 # Create directories
 RUN mkdir -p /var/log/gonano
 
+USER gonano
+
 # Install binaries
 RUN rm -rf /data/var/db/pkgin && \
     /data/bin/pkgin -y up && \
@@ -16,6 +18,8 @@ RUN rm -rf /data/var/db/pkgin && \
         mysql-server-5.5 \
         mysql-client-5.5 && \
     rm -rf /data/var/db/pkgin/cache
+
+USER root
 
 # Install binaries
 RUN rm -rf /opt/gonano/var/db/pkgin && \
