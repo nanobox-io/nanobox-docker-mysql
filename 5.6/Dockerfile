@@ -29,7 +29,7 @@ RUN rm -rf /opt/gonano/var/db/pkgin && \
 
 # Install binaries
 RUN apt-get update && \
-    apt-get install -y lsof sysstat libsys-hostname-long-perl libfile-copy-recursive-perl libfile-copy-link-perl libdata-dumper-concise-perl libdata-dumper-simple-perl iputils-arping && \
+    apt-get install -y lsof sysstat libsys-hostname-long-perl libfile-copy-recursive-perl libfile-copy-link-perl libdata-dumper-concise-perl libdata-dumper-simple-perl iputils-arping cron && \
     rm -rf \
         /var/lib/apt/lists/* \
         /var/cache/apt/* \
