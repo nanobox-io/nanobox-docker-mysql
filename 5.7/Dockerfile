@@ -15,7 +15,8 @@ RUN rm -rf /data/var/db/pkgin && \
         flip \
         flip-scripts \
         galera \
-        mysql-server-5.7 && \
+        mysql-server-5.7 \
+        mysql-client-5.7 && \
     rm -rf /data/var/db/pkgin/cache
 
 USER root
