@@ -59,6 +59,7 @@ When configuring MySQL in your Boxfile, you can define which of the following ve
 
 - 5.5
 - 5.6
+- 5.7
 
 **Note:** Due to version compatibility constraints, MySQL versions cannot be changed after the service is created. To use a different version, you'll have to create a new MySQL service and manually migrate data.
 
