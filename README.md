@@ -4,7 +4,7 @@ This is an MySQL Docker image used to launch a MySQL service on Nanobox. To use 
 
 ```yaml
 data.db:
-  image: nanobox/mysql
+  image: nanobox/mysql:5.5
 ```
 
 ## MySQL Configuration Options
@@ -32,9 +32,8 @@ MySQL components are configured in your `boxfile.yml`. All available configurati
 #### Overview of MySQL Boxfile Settings
 ```yaml
 data.db:
-  image: nanobox/mysql
+  image: nanobox/mysql:5.5
   config:
-    version: 5.5
     plugins:
       - federated
       - audit_log
@@ -82,24 +81,6 @@ data.db:
           - gonano
           - testing
 ```  
-
-### Version
-When configuring MySQL in your Boxfile, you can define which of the following versions you'd like to use.
-
-- 5.5
-- 5.6
-- 5.7
-
-**Note:** Due to version compatibility constraints, MySQL versions cannot be changed after the service is created. To use a different version, you'll have to create a new MySQL service and manually migrate data.
-
-#### version
-```yaml
-# default setting
-data.db:
-  image: nanobox/mysql
-  config:
-    version: 5.6
-```
 
 ### Plugins
 This allows you to specify what MySQL plugins to load into your database service. The following plugins are available:
